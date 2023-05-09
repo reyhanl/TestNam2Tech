@@ -110,6 +110,7 @@ struct QueryModel: Codable{
     var openNow: Bool?
     var sortBy: String?
     var limit: Int?
+    var offSet: Int?
     
     enum CodingKeys: String, CodingKey{
         case location = "location"
@@ -123,9 +124,10 @@ struct QueryModel: Codable{
         case openNow = "open_now"
         case sortBy = "sort_by"
         case limit = "limit"
+        case offSet = "offset"
     }
     
-    init(location: String? = nil, latitude: Float? = nil, longitude: Float? = nil, term: String? = nil, radius: String? = nil, categories: [String]? = nil, locale: String? = nil, price: [Int]? = nil, openNow: Bool? = nil, sortBy: String? = nil, limit: Int? = nil) {
+    init(location: String? = nil, latitude: Float? = nil, longitude: Float? = nil, term: String? = nil, radius: String? = nil, categories: [String]? = nil, locale: String? = nil, price: [Int]? = nil, openNow: Bool? = nil, sortBy: String? = nil, limit: Int? = nil, offset: Int? = nil) {
         self.location = location
         self.latitude = latitude
         self.longitude = longitude
@@ -137,6 +139,7 @@ struct QueryModel: Codable{
         self.openNow = openNow
         self.sortBy = sortBy
         self.limit = limit
+        self.offSet = offset
     }
 }
 
@@ -163,6 +166,10 @@ extension QueryModel{
         
         if let sortBy = sortBy{
             items.append(.init(name: "sort_by", value: "\(sortBy)"))
+        }
+        
+        if let offSet = offSet{
+            items.append(.init(name: "offset", value: "\(offSet)"))
         }
         return items
     }
