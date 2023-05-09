@@ -14,21 +14,21 @@ class ViewController: UIViewController {
     @IBOutlet weak var scrollToTopButton: UIView!
     @IBOutlet weak var filterCollectionView: UICollectionView!
     
-    var businesses: [BusinessModel] = []
-    var currentPage: Int = 0
-    var searchController: UISearchController?
-    var filters: [Filter] = [
+    private var businesses: [BusinessModel] = []
+    private var currentPage: Int = 0
+    private var searchController: UISearchController?
+    private var filters: [Filter] = [
         .nearMe, .cheap, .quiteCheap, .expensive, .superExpensive
     ]
-    var locationManager = CLLocationManager()
-    var location: CLLocationCoordinate2D?{
+    private var locationManager = CLLocationManager()
+    private var location: CLLocationCoordinate2D?{
         didSet{
             if oldValue == nil{
                 fetchData()
             }
         }
     }
-    var activeFilters: [Filter] = []
+    private var activeFilters: [Filter] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,12 +41,12 @@ class ViewController: UIViewController {
         locationManager.startUpdatingLocation()
     }
     
-    func setupUI(){
+    private func setupUI(){
         setupNavigationBar()
         setupScrollToTop()
     }
     
-    func setupNavigationBar(){
+    private func setupNavigationBar(){
         title = "Businesses"
         navigationController?.navigationBar.prefersLargeTitles = true
         
@@ -55,13 +55,13 @@ class ViewController: UIViewController {
         searchController?.searchResultsUpdater = self
     }
     
-    func setupScrollToTop(){
+    private func setupScrollToTop(){
         scrollToTopButton.backgroundColor = .blue
         scrollToTopButton.addGestureRecognizer(target: self, selector: #selector(scrollToTop))
         scrollToTopButton.layer.cornerRadius = scrollToTopButton.frame.width / 2
     }
     
-    func setupCollectionView(){
+    private func setupCollectionView(){
         filterCollectionView.dataSource = self
         filterCollectionView.delegate = self
         
@@ -80,43 +80,37 @@ class ViewController: UIViewController {
     private func fetchData(keywordParam: String? = nil, shouldRemovePreviousData: Bool = false){
         var priceFilter: [Int]? = []
         var keyword: String? = nil
-        if keywordParam == nil, let text = searchController?.searchBar.text, text != ""{
-            keyword = text
-        }else if keywordParam != nil{
-            keyword = keywordParam
-        }
-        var sortBy = "best_match"
-        for filter in activeFilters{
-            if [Filter.cheap, .quiteCheap, .expensive, .superExpensive].contains(where: {$0.displayValue == filter.displayValue}){
-                priceFilter?.append(filter.displayValue.count)
-            }else{
-                if filter.displayValue == Filter.nearMe.displayValue{
-                    sortBy = "distance"
-                }
-            }
-        }
-        if priceFilter?.count == 0{
-            priceFilter = nil
-        }
+        var sortBy = "best_match" //will be replace by distance if Near Me filter Active
+        
+        keyword = getKeyword()
+        getFilter()
         if shouldRemovePreviousData{
             currentPage = 0
         }
+        
         let location = location
         let longitude: Float? = location?.longitude == nil ? nil:Float(location?.longitude ?? 0)
         let latitude: Float? = location?.latitude == nil ? nil:Float(location?.latitude ?? 0)
-        print(longitude, latitude)
-        NetworkManager.shared.fetchBusiness(model: .init(location: nil, latitude: latitude, longitude: longitude, term: keyword, price: priceFilter, sortBy: sortBy, limit: 20, offset: currentPage * 20)) { result in
+        
+        let model = QueryModel.init(
+                                latitude: latitude,
+                                longitude: longitude,
+                                term: keyword,
+                                price: priceFilter,
+                                sortBy: sortBy,
+                                limit: 20,
+                                offset: currentPage * 20)
+        NetworkManager.shared.fetchBusiness(model: model) { [weak self] result in
+            guard let self = self else{return}
             switch result{
             case .success(let model):
                 self.currentPage += 1
-                print("model: \(model.businesses?.count)")
                 if shouldRemovePreviousData{
                     self.businesses =  model.businesses ?? []
                 }else{
                     print()
                     self.businesses.append(contentsOf: model.businesses ?? [])
                 }
-                print(model.businesses.map({$0.first?.name}))
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
@@ -124,19 +118,29 @@ class ViewController: UIViewController {
                 break
             }
         }
-    }
-    
-    func sort(){
-        if let filter = activeFilters.first(where: {$0.displayValue == "Distance"}){
-            switch filter{
-            case .distanceAscending(let isAscending):
-                if isAscending{
-                    businesses = businesses.sorted(by: {$0.distance ?? 0 < $1.distance ?? 0})
+        
+        func getKeyword() -> String?{
+            if keywordParam == nil, let text = searchController?.searchBar.text, text != ""{
+                keyword = text
+            }else if keywordParam != nil{
+                keyword = keywordParam
+            }
+            return keyword
+        }
+        
+        func getFilter(){
+            for filter in activeFilters{
+                if [Filter.cheap, .quiteCheap, .expensive, .superExpensive].contains(where: {$0.displayValue == filter.displayValue}){
+                    //$ = 1, $$ = 2, $$$ = 3, $$$$ = 4
+                    priceFilter?.append(filter.displayValue.count)
                 }else{
-                    businesses = businesses.sorted(by: {$0.distance ?? 0 > $1.distance ?? 0})
+                    if filter.displayValue == Filter.nearMe.displayValue{
+                        sortBy = "distance"
+                    }
                 }
-            default:
-                break
+            }
+            if priceFilter?.count == 0{
+                priceFilter = nil
             }
         }
     }
