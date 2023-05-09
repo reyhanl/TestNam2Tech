@@ -10,4 +10,5 @@ import Foundation
 class URLManager{
     static let baseUrl = "api.yelp.com/v3/"
     static let getBusiness = "businesses/search"
+    static let getBusinessDetail = "businesses/"
 }

@@ -62,6 +62,14 @@ class NetworkManager{
             completion(.failure(error))
         }
     }
+    
+    func fetchBusinessDetail(id: String, completion: @escaping((Result<BusinessModel, Error>) -> Void)){
+        let encoder = JSONEncoder()
+        print(id)
+        request(method: .get, contentType: .formUrlEncoded, data: nil, url: URLManager.getBusinessDetail + id, queryItems: []) { (result: Result<BusinessModel, Error>) in
+            completion(result)
+        }
+    }
 }
 
 enum HTTPMethod: String{

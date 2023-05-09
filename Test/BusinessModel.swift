@@ -31,6 +31,7 @@ struct BusinessModel: Codable{
     var phone: String?
     var displayPhone: String?
     var distance: Float?
+    var photos: [String]?
     
     enum CodingKeys: String, CodingKey{
         case id = "id"
@@ -48,6 +49,7 @@ struct BusinessModel: Codable{
         case phone = "phone"
         case displayPhone = "display_phone"
         case distance = "distance"
+        case photos = "photos"
     }
 }
 

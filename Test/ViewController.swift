@@ -35,15 +35,19 @@ class ViewController: UIViewController {
         setupUI()
         setupTableView()
         setupCollectionView()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation()
+        setLocationManager()
     }
     
     private func setupUI(){
         setupNavigationBar()
         setupScrollToTop()
+    }
+    
+    func setLocationManager(){
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
     }
     
     private func setupNavigationBar(){
@@ -172,6 +176,12 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate{
         if indexPath.row == businesses.count - 1 && tableView.contentSize.height > tableView.frame.height{
             fetchData()
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = DetailViewController(nibName: "DetailViewController", bundle: nil)
+        vc.setupUI(id: businesses[indexPath.row].id ?? "")
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
