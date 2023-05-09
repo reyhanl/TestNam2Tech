@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class ViewController: UIViewController {
 
@@ -14,11 +15,19 @@ class ViewController: UIViewController {
     @IBOutlet weak var filterCollectionView: UICollectionView!
     
     var businesses: [BusinessModel] = []
-    var currentPage: Int = 1
+    var currentPage: Int = 0
     var searchController: UISearchController?
     var filters: [Filter] = [
-        .nearMe, .distanceAscending(true), .priceAscending(true)
+        .nearMe, .cheap, .quiteCheap, .expensive, .superExpensive
     ]
+    var locationManager = CLLocationManager()
+    var location: CLLocationCoordinate2D?{
+        didSet{
+            if oldValue == nil{
+                fetchData()
+            }
+        }
+    }
     var activeFilters: [Filter] = []
     
     override func viewDidLoad() {
@@ -26,7 +35,10 @@ class ViewController: UIViewController {
         setupUI()
         setupTableView()
         setupCollectionView()
-        fetchData()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
     }
     
     func setupUI(){
@@ -65,17 +77,65 @@ class ViewController: UIViewController {
         tableView.register(nib, forCellReuseIdentifier: "cell")
     }
     
-    private func fetchData(){
-        NetworkManager.shared.fetchBusiness(model: .init(location: "New York City", limit: 20, offset: currentPage * 20)) { result in
+    private func fetchData(keywordParam: String? = nil, shouldRemovePreviousData: Bool = false){
+        var priceFilter: [Int]? = []
+        var keyword: String? = nil
+        if keywordParam == nil, let text = searchController?.searchBar.text, text != ""{
+            keyword = text
+        }else if keywordParam != nil{
+            keyword = keywordParam
+        }
+        var sortBy = "best_match"
+        for filter in activeFilters{
+            if [Filter.cheap, .quiteCheap, .expensive, .superExpensive].contains(where: {$0.displayValue == filter.displayValue}){
+                priceFilter?.append(filter.displayValue.count)
+            }else{
+                if filter.displayValue == Filter.nearMe.displayValue{
+                    sortBy = "distance"
+                }
+            }
+        }
+        if priceFilter?.count == 0{
+            priceFilter = nil
+        }
+        if shouldRemovePreviousData{
+            currentPage = 0
+        }
+        let location = location
+        let longitude: Float? = location?.longitude == nil ? nil:Float(location?.longitude ?? 0)
+        let latitude: Float? = location?.latitude == nil ? nil:Float(location?.latitude ?? 0)
+        print(longitude, latitude)
+        NetworkManager.shared.fetchBusiness(model: .init(location: nil, latitude: latitude, longitude: longitude, term: keyword, price: priceFilter, sortBy: sortBy, limit: 20, offset: currentPage * 20)) { result in
             switch result{
             case .success(let model):
                 self.currentPage += 1
                 print("model: \(model.businesses?.count)")
-                self.businesses.append(contentsOf: model.businesses ?? [])
+                if shouldRemovePreviousData{
+                    self.businesses =  model.businesses ?? []
+                }else{
+                    print()
+                    self.businesses.append(contentsOf: model.businesses ?? [])
+                }
+                print(model.businesses.map({$0.first?.name}))
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
             case .failure(_):
+                break
+            }
+        }
+    }
+    
+    func sort(){
+        if let filter = activeFilters.first(where: {$0.displayValue == "Distance"}){
+            switch filter{
+            case .distanceAscending(let isAscending):
+                if isAscending{
+                    businesses = businesses.sorted(by: {$0.distance ?? 0 < $1.distance ?? 0})
+                }else{
+                    businesses = businesses.sorted(by: {$0.distance ?? 0 > $1.distance ?? 0})
+                }
+            default:
                 break
             }
         }
@@ -105,7 +165,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate{
         var shouldDisplayScrollToTopButton = (tableView.indexPathsForVisibleRows?.contains(where: {$0.row == 0}) ?? false)
         scrollToTopButton.isHidden = shouldDisplayScrollToTopButton
         
-        if indexPath.row == businesses.count - 1{
+        if indexPath.row == businesses.count - 1 && tableView.contentSize.height > tableView.frame.height{
             fetchData()
         }
     }
@@ -132,7 +192,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
 extension ViewController: UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else{return}
-        
+        fetchData(keywordParam: text, shouldRemovePreviousData: true)
     }
 }
 
@@ -141,9 +201,11 @@ extension ViewController: FilterCollectionViewCellDelegate{
         if activeFilters.contains(where: {$0.displayValue == filter.displayValue}){
             activeFilters.removeAll(where: {$0.displayValue == filter.displayValue})
             filterCollectionView.reloadData()
+            fetchData(shouldRemovePreviousData: true)
         }else{
             activeFilters.append(filter)
             filterCollectionView.reloadData()
+            fetchData(shouldRemovePreviousData: true)
         }
     }
     
@@ -152,14 +214,19 @@ extension ViewController: FilterCollectionViewCellDelegate{
         switch filter{
         case .nearMe:
             break
-        case .priceAscending(let isAscending):
-            filters.remove(at: index)
-            filters.insert(.priceAscending(!isAscending), at: index)
-            filterCollectionView.reloadData()
         case .distanceAscending(let isAscending):
             filters.remove(at: index)
             filters.insert(.distanceAscending(!isAscending), at: index)
             filterCollectionView.reloadData()
+            tableView.reloadData()
+        default:
+            break
         }
+    }
+}
+
+extension ViewController: CLLocationManagerDelegate{
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        location = locations.first?.coordinate
     }
 }

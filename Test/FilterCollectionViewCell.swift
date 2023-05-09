@@ -23,12 +23,12 @@ class FilterCollectionViewCell: UICollectionViewCell {
     func setupCell(filter: Filter, isActive: Bool){
         label.text = filter.displayValue
         switch filter{
-        case .nearMe:
-            sortImageView.isHidden = true
-        case .priceAscending(let isAscending), .distanceAscending(let isAscending):
+        case .distanceAscending(let isAscending):
             sortImageView.isHidden = false
             print("filter: \(filter) \(isAscending)")
             sortImageView.image = isAscending ? UIImage(systemName: "arrow.up"):.init(systemName: "arrow.down")
+        default:
+            sortImageView.isHidden = true
         }
         self.filter = filter
         setActiveStatus(isActive)
@@ -46,18 +46,17 @@ class FilterCollectionViewCell: UICollectionViewCell {
     }
     
     func setActiveStatus(_ isActive: Bool){
-        backgroundColor = isActive ? .blue:.clear
+        backgroundColor = isActive ? .blue:.init(red: 230/255, green: 230/255, blue: 230/255, alpha: 1)
         label.textColor = isActive ? .white:.black
     }
     
     @objc func changeSort(){
         guard let filter = filter else{return}
         switch filter{
-        case .nearMe:
-            break
-        case .priceAscending(_), .distanceAscending(_):
+        case .distanceAscending(_):
             delegate?.changeSort(filter: filter)
-            delegate?.shouldExecuteFilter(filter: filter)
+        default:
+            break
         }
     }
     

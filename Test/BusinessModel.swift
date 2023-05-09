@@ -171,6 +171,17 @@ extension QueryModel{
         if let offSet = offSet{
             items.append(.init(name: "offset", value: "\(offSet)"))
         }
+        
+        if let prices = price{
+            for price in prices{
+                items.append(.init(name: "price", value: "\(price)"))
+            }
+        }
+        
+        if let term = term{
+            items.append(.init(name: "term", value: term))
+        }
+        
         return items
     }
 }

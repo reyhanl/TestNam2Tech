@@ -9,17 +9,26 @@ import Foundation
 
 enum Filter{
     case nearMe
-    case priceAscending(Bool)
     case distanceAscending(Bool)
+    case cheap
+    case quiteCheap
+    case expensive
+    case superExpensive
     
     var displayValue: String{
         switch self{
         case .nearMe:
             return "Near me"
-        case .priceAscending(_):
-            return "Price"
         case .distanceAscending(_):
             return "Distance"
+        case .cheap:
+            return "$"
+        case .quiteCheap:
+            return "$$"
+        case .expensive:
+            return "$$$"
+        case .superExpensive:
+            return "$$$$"
         }
     }
 }
