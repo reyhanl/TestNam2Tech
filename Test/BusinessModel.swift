@@ -8,10 +8,10 @@
 import Foundation
 
 struct ResponseModel: Codable{
-    var business: [BusinessModel]?
+    var businesses: [BusinessModel]?
     
     enum CodingKeys: String, CodingKey{
-        case business = "business"
+        case businesses = "businesses"
     }
 }
 struct BusinessModel: Codable{
@@ -57,8 +57,8 @@ enum TransactionModel: Codable{
 }
 
 struct CoordinateModel: Codable{
-    var latitude: String?
-    var longitude: String?
+    var latitude: Float?
+    var longitude: Float?
     
     enum CodingKeys: String, CodingKey{
         case latitude = "latitude"
@@ -109,6 +109,7 @@ struct QueryModel: Codable{
     var price: [Int]?
     var openNow: Bool?
     var sortBy: String?
+    var limit: Int?
     
     enum CodingKeys: String, CodingKey{
         case location = "location"
@@ -121,5 +122,48 @@ struct QueryModel: Codable{
         case price = "price"
         case openNow = "open_now"
         case sortBy = "sort_by"
+        case limit = "limit"
+    }
+    
+    init(location: String? = nil, latitude: Float? = nil, longitude: Float? = nil, term: String? = nil, radius: String? = nil, categories: [String]? = nil, locale: String? = nil, price: [Int]? = nil, openNow: Bool? = nil, sortBy: String? = nil, limit: Int? = nil) {
+        self.location = location
+        self.latitude = latitude
+        self.longitude = longitude
+        self.term = term
+        self.radius = radius
+        self.categories = categories
+        self.locale = locale
+        self.price = price
+        self.openNow = openNow
+        self.sortBy = sortBy
+        self.limit = limit
+    }
+}
+
+enum SortBy{
+    case ascending
+    case decending
+}
+
+extension QueryModel{
+    func generateQueryItem() -> [URLQueryItem]{
+        var items: [URLQueryItem] = []
+        if let location = location{
+            items.append(.init(name: "location", value: location))
+        }
+        
+        if let longitude = longitude, let latitude = latitude{
+            items.append(.init(name: "longitude", value: "\(longitude)"))
+            items.append(.init(name: "latitude", value: "\(latitude)"))
+        }
+        
+        if let limit = limit{
+            items.append(.init(name: "limit", value: "\(limit)"))
+        }
+        
+        if let sortBy = sortBy{
+            items.append(.init(name: "sort_by", value: "\(sortBy)"))
+        }
+        return items
     }
 }
