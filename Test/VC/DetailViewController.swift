@@ -18,6 +18,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var appleMapActionView: UIView!
     @IBOutlet weak var googleMapActionLabel: UILabel!
+    @IBOutlet weak var backButton: UIView!
     
     private var id: String?
     private var businessModel: BusinessModel?{
@@ -43,12 +44,12 @@ class DetailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.largeTitleDisplayMode = .never
+        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+        navigationController?.navigationBar.isHidden = false
     }
     
     func setupUI(id: String){
@@ -62,6 +63,8 @@ class DetailViewController: UIViewController {
     private func setupMapKit(){
         googleMapActionLabel.addGestureRecognizer(target: self, selector: #selector(openOnGoogleMaps))
         appleMapActionView.addGestureRecognizer(target: self, selector: #selector(openOnGoogleMaps))
+        backButton.addGestureRecognizer(target: self, selector: #selector(back))
+        backButton.subviews.map({$0.addGestureRecognizer(target: self, selector: #selector(back))})
     }
     
     private func setCollectionView(){
@@ -154,6 +157,10 @@ class DetailViewController: UIViewController {
         }else{
             presentToastAlert(text: "It seems that Google Maps is not available in your phone")
         }
+    }
+    
+    @objc private func back(){
+        navigationController?.popViewController(animated: true)
     }
 }
 

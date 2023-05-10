@@ -24,7 +24,7 @@ extension UIViewController{
             let alert = UIView()
             alert.tag = 999
             alert.translatesAutoresizingMaskIntoConstraints = false
-            alert.backgroundColor = .white
+            alert.backgroundColor = .systemBackground
             view.addSubview(alert)
             
             NSLayoutConstraint.activate([
