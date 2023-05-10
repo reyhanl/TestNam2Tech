@@ -17,6 +17,7 @@ class BusinessTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        businessImageView.layer.cornerRadius = businessImageView.frame.width / 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

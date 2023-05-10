@@ -43,6 +43,12 @@ class DetailViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = true
+
+    }
+    
     func setupUI(id: String){
         self.id = id
     }
@@ -102,7 +108,7 @@ class DetailViewController: UIViewController {
     private func setMapKit(long: Float?, lat: Float?){
         guard let long = long, let lat = lat else{return}
         mapKit.centerCoordinate = .init(latitude: CLLocationDegrees(lat), longitude: CLLocationDegrees(long))
-        mapKit.cameraZoomRange = MKMapView.CameraZoomRange.init(maxCenterCoordinateDistance: 30)
+        mapKit.cameraZoomRange = MKMapView.CameraZoomRange.init(maxCenterCoordinateDistance: 100)
         mapKit.layer.cornerRadius = 10
         mapKit.isScrollEnabled = false
         mapKit.isHidden = false
@@ -134,10 +140,12 @@ class DetailViewController: UIViewController {
         guard
             let long = businessModel?.coordinates?.longitude,
             let lat = businessModel?.coordinates?.latitude,
-            let url = URL(string: "comgooglemaps://?saddr=&daddr=\(lat),\(long)&directionsmode=driving"),
+            let url = URL(string: "comgooglemaps://?center=\(lat),\(long)&zoom=14&views=traffic&q=\(lat),\(long)"),
             let googleUrl = URL(string: "comgooglemaps://") else{return}
         if UIApplication.shared.canOpenURL(googleUrl){
             UIApplication.shared.open(url)
+        }else{
+            presentToastAlert(text: "It seems that Google Maps is not available in your phone")
         }
     }
 }

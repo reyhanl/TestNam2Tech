@@ -36,10 +36,13 @@ class ViewController: UIViewController {
         setupUI()
         setupTableView()
         setupCollectionView()
+        navigationController?.navigationBar.prefersLargeTitles = true
         setLocationManager()
+        setupSearchController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         setupNavigationBar()
     }
     
@@ -49,19 +52,25 @@ class ViewController: UIViewController {
     }
     
     private func setLocationManager(){
-        locationManager.delegate = self
+        location = .init(latitude: CLLocationDegrees(40.714868), longitude: CLLocationDegrees(-73.997006))
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation()
+        //FIXME: Uncomment if you want to use user's real location
+        //Commented because in Indonesia you would get no business around your area whatsoever.
+//        locationManager.delegate = self
+//        locationManager.startUpdatingLocation()
     }
     
     private func setupNavigationBar(){
         title = "Businesses"
         
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    private func setupSearchController(){
         searchController = UISearchController(searchResultsController: nil)
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
         searchController?.searchResultsUpdater = self
     }
     
@@ -195,7 +204,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController(nibName: "DetailViewController", bundle: nil)
         vc.setupUI(id: businesses[indexPath.row].id ?? "")
-        navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -220,6 +229,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
 extension ViewController: UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else{return}
+//        URLSession.shared.invalidateAndCancel()
         fetchData(keywordParam: text, shouldRemovePreviousData: true)
     }
 }
