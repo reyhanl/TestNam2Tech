@@ -19,6 +19,6 @@ git clone https://github.com/reyhanl/TestNam2Tech.git
 
 ## Library
 ### Search Feature
-![Alt text](https://raw.github.com/TestNam2Tech/main/searchWhileFiltering.png?sanitize=true)
-<img src="https://raw.github.com/TestNam2Tech/main/searchWhileFiltering.png?sanitize=true">
+![Alt text](https://raw.github.com/reyhanl/TestNam2Tech/main/searchWhileFiltering.png?sanitize=true)
+<img src="https://raw.github.com/reyhanl/TestNam2Tech/main/searchWhileFiltering.png?sanitize=true">
 
