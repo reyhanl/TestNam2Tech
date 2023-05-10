@@ -23,6 +23,7 @@ class ViewController: UIViewController {
     private var locationManager = CLLocationManager()
     private var location: CLLocationCoordinate2D?{
         didSet{
+            //Since user's location is always going to be updated, we want to make sure that we only fetch data on the begining.
             if oldValue == nil{
                 fetchData()
             }
@@ -47,7 +48,7 @@ class ViewController: UIViewController {
         setupScrollToTop()
     }
     
-    func setLocationManager(){
+    private func setLocationManager(){
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
@@ -162,7 +163,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func scrollToTop(){
+    @objc private func scrollToTop(){
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
 }
