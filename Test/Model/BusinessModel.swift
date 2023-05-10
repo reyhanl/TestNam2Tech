@@ -14,6 +14,7 @@ struct ResponseModel: Codable{
         case businesses = "businesses"
     }
 }
+
 struct BusinessModel: Codable{
     var id: String?
     var alias: String?
@@ -31,6 +32,7 @@ struct BusinessModel: Codable{
     var phone: String?
     var displayPhone: String?
     var distance: Float?
+    var photos: [String]?
     
     enum CodingKeys: String, CodingKey{
         case id = "id"
@@ -48,6 +50,7 @@ struct BusinessModel: Codable{
         case phone = "phone"
         case displayPhone = "display_phone"
         case distance = "distance"
+        case photos = "photos"
     }
 }
 
@@ -110,6 +113,7 @@ struct QueryModel: Codable{
     var openNow: Bool?
     var sortBy: String?
     var limit: Int?
+    var offSet: Int?
     
     enum CodingKeys: String, CodingKey{
         case location = "location"
@@ -123,9 +127,10 @@ struct QueryModel: Codable{
         case openNow = "open_now"
         case sortBy = "sort_by"
         case limit = "limit"
+        case offSet = "offset"
     }
     
-    init(location: String? = nil, latitude: Float? = nil, longitude: Float? = nil, term: String? = nil, radius: String? = nil, categories: [String]? = nil, locale: String? = nil, price: [Int]? = nil, openNow: Bool? = nil, sortBy: String? = nil, limit: Int? = nil) {
+    init(location: String? = nil, latitude: Float? = nil, longitude: Float? = nil, term: String? = nil, radius: String? = nil, categories: [String]? = nil, locale: String? = nil, price: [Int]? = nil, openNow: Bool? = nil, sortBy: String? = nil, limit: Int? = nil, offset: Int? = nil) {
         self.location = location
         self.latitude = latitude
         self.longitude = longitude
@@ -137,33 +142,46 @@ struct QueryModel: Codable{
         self.openNow = openNow
         self.sortBy = sortBy
         self.limit = limit
+        self.offSet = offset
     }
 }
 
-enum SortBy{
-    case ascending
-    case decending
+struct Rating: Codable{
+    var id: String?
+    var url: String?
+    var text: String?
+    var rating: Int?
+    var timeCreated: String?
+    var user: User?
+    
+    enum CodingKeys: String, CodingKey{
+        case id = "id"
+        case url = "url"
+        case text = "text"
+        case rating = "rating"
+        case timeCreated = "time_created"
+        case user = "user"
+    }
 }
 
-extension QueryModel{
-    func generateQueryItem() -> [URLQueryItem]{
-        var items: [URLQueryItem] = []
-        if let location = location{
-            items.append(.init(name: "location", value: location))
-        }
-        
-        if let longitude = longitude, let latitude = latitude{
-            items.append(.init(name: "longitude", value: "\(longitude)"))
-            items.append(.init(name: "latitude", value: "\(latitude)"))
-        }
-        
-        if let limit = limit{
-            items.append(.init(name: "limit", value: "\(limit)"))
-        }
-        
-        if let sortBy = sortBy{
-            items.append(.init(name: "sort_by", value: "\(sortBy)"))
-        }
-        return items
+struct User: Codable{
+    var id: String?
+    var profileUrl: String?
+    var profileImage: String?
+    var name: String?
+    
+    enum CodingKeys: String, CodingKey{
+        case id = "id"
+        case profileUrl = "profile_url"
+        case profileImage = "image_url"
+        case name = "name"
+    }
+}
+
+struct RatingResponseModel: Codable{
+    var reviews: [Rating]?
+    
+    enum CodingKeys: String, CodingKey{
+        case reviews = "reviews"
     }
 }
