@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var scrollToTopButton: UIView!
     @IBOutlet weak var filterCollectionView: UICollectionView!
+    var refreshControl: UIRefreshControl?
     
     private var businesses: [BusinessModel] = []
     private var currentPage: Int = 0
@@ -39,6 +40,7 @@ class ViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         setLocationManager()
         setupSearchController()
+        addRefreshController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,6 +51,12 @@ class ViewController: UIViewController {
     private func setupUI(){
         setupNavigationBar()
         setupScrollToTop()
+    }
+    
+    private func addRefreshController(){
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tableView.refreshControl = refreshControl
     }
     
     private func setLocationManager(){
@@ -144,6 +152,9 @@ class ViewController: UIViewController {
             case .failure(_):
                 break
             }
+            DispatchQueue.main.async {
+                self.refreshControl?.endRefreshing()
+            }
         }
         
         func getKeyword() -> String?{
@@ -174,6 +185,11 @@ class ViewController: UIViewController {
     
     @objc private func scrollToTop(){
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    }
+    
+    @objc func refresh(){
+        refreshControl?.beginRefreshing()
+        fetchData(shouldRemovePreviousData: true)
     }
 }
 
