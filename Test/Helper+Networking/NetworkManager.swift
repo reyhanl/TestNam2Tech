@@ -35,6 +35,7 @@ class NetworkManager{
             }
             
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode < 300 && httpResponse.statusCode >= 200 else{
+                print(response as? HTTPURLResponse)
                 completion(.failure(CustomError.somethingWentWrong))
                 return
             }

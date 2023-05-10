@@ -21,7 +21,7 @@ extension UIViewController{
         }
         
         func presentToast(){
-            var alert = UIView()
+            let alert = UIView()
             alert.tag = 999
             alert.translatesAutoresizingMaskIntoConstraints = false
             alert.backgroundColor = .white

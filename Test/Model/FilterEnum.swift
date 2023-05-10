@@ -32,3 +32,8 @@ enum Filter{
         }
     }
 }
+
+enum SortBy{
+    case ascending
+    case decending
+}

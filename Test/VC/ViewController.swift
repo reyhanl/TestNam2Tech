@@ -30,11 +30,14 @@ class ViewController: UIViewController {
             }
         }
     }
+    //MARK: Insert your API KEY HERE
+    private var apiKey = "uWStM_d70fspPIssaT-MFENN9HUX_7e8S92IGkCYV4PmrL85L6cM5Zccak6MZopiRIiXwK5cPrxANjzlHLRzayi46hKymuy7N7hOnOwKEP2UVumWVFrVQ2ji3tFZZHYx"
     private var activeFilters: [Filter] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setApiKey()
         setupTableView()
         setupCollectionView()
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -46,6 +49,14 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationBar()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    private func setApiKey(){
+        UserDefaults.standard.set(apiKey, forKey: "apiKey")
     }
     
     private func setupUI(){
@@ -71,9 +82,7 @@ class ViewController: UIViewController {
     
     private func setupNavigationBar(){
         title = "Businesses"
-        
         navigationItem.largeTitleDisplayMode = .always
-        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     private func setupSearchController(){
@@ -149,8 +158,8 @@ class ViewController: UIViewController {
                         }
                     }
                 }
-            case .failure(_):
-                break
+            case .failure(let error):
+                print(error.localizedDescription)
             }
             DispatchQueue.main.async {
                 self.refreshControl?.endRefreshing()
@@ -209,7 +218,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        var shouldDisplayScrollToTopButton = (tableView.indexPathsForVisibleRows?.contains(where: {$0.row == 0}) ?? false)
+        let shouldDisplayScrollToTopButton = (tableView.indexPathsForVisibleRows?.contains(where: {$0.row == 0}) ?? false)
         scrollToTopButton.isHidden = shouldDisplayScrollToTopButton
         
         if indexPath.row == businesses.count - 1 && tableView.contentSize.height > tableView.frame.height{

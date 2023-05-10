@@ -10,6 +10,7 @@ import MapKit
 
 class DetailViewController: UIViewController {
     
+    @IBOutlet weak var businessImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imagesCarouselCollectionView: UICollectionView!
     @IBOutlet weak var ratingCollectionView: UICollectionView!
@@ -37,20 +38,25 @@ class DetailViewController: UIViewController {
         let id = id ?? ""
         fetchData(id: id)
         fetchRating(id: id)
+        setupImageView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.prefersLargeTitles = false
+        super.viewWillAppear(animated)
+        navigationItem.largeTitleDisplayMode = .never
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = true
 
     }
     
     func setupUI(id: String){
         self.id = id
+    }
+    
+    private func setupImageView(){
+        businessImageView.layer.cornerRadius = 20
     }
     
     private func setupMapKit(){
@@ -102,6 +108,7 @@ class DetailViewController: UIViewController {
             self.titleLabel.text = businessModel.name ?? ""
             self.ratingLabel.text = "★ \(businessModel.rating ?? 0)"
             self.setMapKit(long: businessModel.coordinates?.longitude, lat: businessModel.coordinates?.latitude)
+            self.businessImageView.setImage(urlString: businessModel.imageUrl)
         }
     }
     
