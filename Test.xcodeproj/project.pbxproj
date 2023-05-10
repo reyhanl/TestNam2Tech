@@ -33,6 +33,7 @@
 		FC0102BE2A0B0DA70065F710 /* RatingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0102BC2A0B0DA70065F710 /* RatingCollectionViewCell.xib */; };
 		FC0102C02A0B12F20065F710 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0102BF2A0B12F20065F710 /* UIImageViewExtension.swift */; };
 		FC0102C42A0B247F0065F710 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0102C32A0B247E0065F710 /* CacheManager.swift */; };
+		FC0102C82A0B27750065F710 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0102C72A0B27750065F710 /* UILabelExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		FC0102BC2A0B0DA70065F710 /* RatingCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RatingCollectionViewCell.xib; sourceTree = "<group>"; };
 		FC0102BF2A0B12F20065F710 /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
 		FC0102C32A0B247E0065F710 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
+		FC0102C72A0B27750065F710 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 				FC0102B12A0AA85F0065F710 /* ImageCollectionViewCell.swift */,
 				FC0102B22A0AA85F0065F710 /* ImageCollectionViewCell.xib */,
 				FC0102C32A0B247E0065F710 /* CacheManager.swift */,
+				FC0102C72A0B27750065F710 /* UILabelExtension.swift */,
 			);
 			path = Test;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				FC0102C02A0B12F20065F710 /* UIImageViewExtension.swift in Sources */,
 				FC01025C2A0A03CF0065F710 /* AppDelegate.swift in Sources */,
 				FC0102A82A0A3BD50065F710 /* FilterEnum.swift in Sources */,
+				FC0102C82A0B27750065F710 /* UILabelExtension.swift in Sources */,
 				FC01025E2A0A03CF0065F710 /* SceneDelegate.swift in Sources */,
 				FC01029A2A0A278C0065F710 /* UIViewExtension.swift in Sources */,
 				FC0102922A0A0FAC0065F710 /* URLManager.swift in Sources */,

@@ -44,13 +44,7 @@ class RatingCollectionViewCell: UICollectionViewCell {
         guard let ratingValue = rating.rating else{return}
         print(ratingValue)
         ratingLabel.text = ""
-        for i in 1...5{
-            if i <= ratingValue{
-                ratingLabel.text = (ratingLabel.text ?? "") + "★"
-            }else{
-                ratingLabel.text = (ratingLabel.text ?? "") + "☆"
-            }
-        }
+        ratingLabel.createRatingText(ratingValue)
     }
 
 }

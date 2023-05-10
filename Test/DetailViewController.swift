@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import MapKit
 
 class DetailViewController: UIViewController {
-
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imagesCollectionView: UICollectionView!
     @IBOutlet weak var ratingCollectionView: UICollectionView!
+    @IBOutlet weak var mapKit: MKMapView!
+    @IBOutlet weak var ratingLabel: UILabel!
+    @IBOutlet weak var appleMapActionView: UIView!
+    @IBOutlet weak var googleMapActionLabel: UILabel!
     
     var id: String?
     var businessModel: BusinessModel?{
@@ -27,6 +32,7 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupMapKit()
         setCollectionView()
         fetchData(id: id ?? "")
         fetchRating(id: id ?? "")
@@ -38,6 +44,11 @@ class DetailViewController: UIViewController {
     
     func setupUI(id: String){
         self.id = id
+    }
+    
+    func setupMapKit(){
+        googleMapActionLabel.addGestureRecognizer(target: self, selector: #selector(openOnGoogleMaps))
+        appleMapActionView.addGestureRecognizer(target: self, selector: #selector(openOnGoogleMaps))
     }
     
     func setCollectionView(){
@@ -83,7 +94,20 @@ class DetailViewController: UIViewController {
         DispatchQueue.main.async {
             self.imagesCollectionView.reloadData()
             self.titleLabel.text = businessModel.name ?? ""
+            self.ratingLabel.text = "★ \(businessModel.rating ?? 0)"
+            self.setMapKit(long: businessModel.coordinates?.longitude, lat: businessModel.coordinates?.latitude)
         }
+    }
+    
+    func setMapKit(long: Float?, lat: Float?){
+        guard let long = long, let lat = lat else{return}
+        mapKit.centerCoordinate = .init(latitude: CLLocationDegrees(lat), longitude: CLLocationDegrees(long))
+        mapKit.cameraZoomRange = MKMapView.CameraZoomRange.init(maxCenterCoordinateDistance: 30)
+        mapKit.layer.cornerRadius = 10
+        mapKit.isScrollEnabled = false
+        mapKit.isHidden = false
+        mapKit.isUserInteractionEnabled = false
+        googleMapActionLabel.isHidden = false
     }
     
     func scrollToNearestCell(){
@@ -100,6 +124,13 @@ class DetailViewController: UIViewController {
     func updateRatingCollectionView(){
         DispatchQueue.main.async {
             self.ratingCollectionView.reloadData()
+        }
+    }
+    
+    @objc func openOnGoogleMaps(){
+        guard let long = businessModel?.coordinates?.longitude, let lat = businessModel?.coordinates?.latitude, let url = URL(string: "comgooglemaps://?saddr=&daddr=\(lat),\(long)&directionsmode=driving"), let googleUrl = URL(string: "comgooglemaps://") else{return}
+        if UIApplication.shared.canOpenURL(googleUrl){
+            UIApplication.shared.open(url)
         }
     }
 }
