@@ -82,6 +82,7 @@ class ViewController: UIViewController {
     
     private func setupNavigationBar(){
         title = "Businesses"
+        navigationItem.searchController = searchController
         navigationItem.largeTitleDisplayMode = .always
     }
     
