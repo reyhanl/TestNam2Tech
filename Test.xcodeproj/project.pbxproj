@@ -29,6 +29,10 @@
 		FC0102AC2A0AA3770065F710 /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0102AA2A0AA3770065F710 /* DetailViewController.xib */; };
 		FC0102B32A0AA85F0065F710 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0102B12A0AA85F0065F710 /* ImageCollectionViewCell.swift */; };
 		FC0102B42A0AA85F0065F710 /* ImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0102B22A0AA85F0065F710 /* ImageCollectionViewCell.xib */; };
+		FC0102BD2A0B0DA70065F710 /* RatingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0102BB2A0B0DA70065F710 /* RatingCollectionViewCell.swift */; };
+		FC0102BE2A0B0DA70065F710 /* RatingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0102BC2A0B0DA70065F710 /* RatingCollectionViewCell.xib */; };
+		FC0102C02A0B12F20065F710 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0102BF2A0B12F20065F710 /* UIImageViewExtension.swift */; };
+		FC0102C42A0B247F0065F710 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0102C32A0B247E0065F710 /* CacheManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +79,10 @@
 		FC0102AA2A0AA3770065F710 /* DetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
 		FC0102B12A0AA85F0065F710 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		FC0102B22A0AA85F0065F710 /* ImageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCollectionViewCell.xib; sourceTree = "<group>"; };
+		FC0102BB2A0B0DA70065F710 /* RatingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingCollectionViewCell.swift; sourceTree = "<group>"; };
+		FC0102BC2A0B0DA70065F710 /* RatingCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RatingCollectionViewCell.xib; sourceTree = "<group>"; };
+		FC0102BF2A0B12F20065F710 /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
+		FC0102C32A0B247E0065F710 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +139,9 @@
 				FC0102A32A0A3B760065F710 /* FilterCollectionViewCell.swift */,
 				FC0102A72A0A3BD50065F710 /* FilterEnum.swift */,
 				FC0102A92A0AA3770065F710 /* DetailViewController.swift */,
+				FC0102BB2A0B0DA70065F710 /* RatingCollectionViewCell.swift */,
+				FC0102BC2A0B0DA70065F710 /* RatingCollectionViewCell.xib */,
+				FC0102BF2A0B12F20065F710 /* UIImageViewExtension.swift */,
 				FC0102AA2A0AA3770065F710 /* DetailViewController.xib */,
 				FC0102A42A0A3B760065F710 /* FilterCollectionViewCell.xib */,
 				FC0102932A0A1AF00065F710 /* BusinessTableViewCell.swift */,
@@ -145,6 +156,7 @@
 				FC0102692A0A03D00065F710 /* Info.plist */,
 				FC0102B12A0AA85F0065F710 /* ImageCollectionViewCell.swift */,
 				FC0102B22A0AA85F0065F710 /* ImageCollectionViewCell.xib */,
+				FC0102C32A0B247E0065F710 /* CacheManager.swift */,
 			);
 			path = Test;
 			sourceTree = "<group>";
@@ -271,6 +283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC0102682A0A03D00065F710 /* LaunchScreen.storyboard in Resources */,
+				FC0102BE2A0B0DA70065F710 /* RatingCollectionViewCell.xib in Resources */,
 				FC0102AC2A0AA3770065F710 /* DetailViewController.xib in Resources */,
 				FC0102A62A0A3B760065F710 /* FilterCollectionViewCell.xib in Resources */,
 				FC0102B42A0AA85F0065F710 /* ImageCollectionViewCell.xib in Resources */,
@@ -302,12 +315,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC0102AB2A0AA3770065F710 /* DetailViewController.swift in Sources */,
+				FC0102C42A0B247F0065F710 /* CacheManager.swift in Sources */,
 				FC0102902A0A0AC50065F710 /* BusinessModel.swift in Sources */,
+				FC0102BD2A0B0DA70065F710 /* RatingCollectionViewCell.swift in Sources */,
 				FC0102A52A0A3B760065F710 /* FilterCollectionViewCell.swift in Sources */,
 				FC0102952A0A1AF00065F710 /* BusinessTableViewCell.swift in Sources */,
 				FC01028C2A0A04BB0065F710 /* NetworkManager.swift in Sources */,
 				FC0102602A0A03CF0065F710 /* ViewController.swift in Sources */,
 				FC0102B32A0AA85F0065F710 /* ImageCollectionViewCell.swift in Sources */,
+				FC0102C02A0B12F20065F710 /* UIImageViewExtension.swift in Sources */,
 				FC01025C2A0A03CF0065F710 /* AppDelegate.swift in Sources */,
 				FC0102A82A0A3BD50065F710 /* FilterEnum.swift in Sources */,
 				FC01025E2A0A03CF0065F710 /* SceneDelegate.swift in Sources */,

@@ -13,7 +13,7 @@ class NetworkManager{
     private func request<T: Decodable>(method: HTTPMethod, contentType: ContentType, data: Data?, url: String, queryItems: [URLQueryItem], completion: @escaping((Result<T, Error>) -> Void)){
         var components = URLComponents()
         components.queryItems = queryItems
-        components.path = URLManager.baseUrl + url
+        components.path = URLManager.baseUrl.url + url
         components.scheme = "https"
         guard let url = components.url else{completion(.failure(CustomError.callApiFailBecauseURLNotFound));return}
         print("error: \(url.absoluteString)")
@@ -55,7 +55,7 @@ class NetworkManager{
         do{
             var data = try encoder.encode(model)
             let queryItems = model.generateQueryItem()
-            request(method: .get, contentType: .formUrlEncoded, data: nil, url: URLManager.getBusiness, queryItems: queryItems) { (result: Result<ResponseModel, Error>) in
+            request(method: .get, contentType: .formUrlEncoded, data: nil, url: URLManager.getBusiness.url, queryItems: queryItems) { (result: Result<ResponseModel, Error>) in
                 completion(result)
             }
         }catch{
@@ -66,7 +66,16 @@ class NetworkManager{
     func fetchBusinessDetail(id: String, completion: @escaping((Result<BusinessModel, Error>) -> Void)){
         let encoder = JSONEncoder()
         print(id)
-        request(method: .get, contentType: .formUrlEncoded, data: nil, url: URLManager.getBusinessDetail + id, queryItems: []) { (result: Result<BusinessModel, Error>) in
+        request(method: .get, contentType: .formUrlEncoded, data: nil, url: URLManager.getBusinessDetail(id).url, queryItems: []) { (result: Result<BusinessModel, Error>) in
+            completion(result)
+        }
+    }
+    
+    func fetchBusinessRating(id: String, completion: @escaping((Result<RatingResponseModel, Error>) -> Void)){
+        let items: [URLQueryItem] = [
+            .init(name: "limit", value: "\(20)")
+        ]
+        request(method: .get, contentType: .formUrlEncoded, data: nil, url: URLManager.getBusinessRating(id).url, queryItems: items) { (result: Result<RatingResponseModel, Error>) in
             completion(result)
         }
     }

@@ -11,6 +11,7 @@ class DetailViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imagesCollectionView: UICollectionView!
+    @IBOutlet weak var ratingCollectionView: UICollectionView!
     
     var id: String?
     var businessModel: BusinessModel?{
@@ -18,11 +19,21 @@ class DetailViewController: UIViewController {
             updateData()
         }
     }
+    var ratings: [Rating]?{
+        didSet{
+            updateRatingCollectionView()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setCollectionView()
         fetchData(id: id ?? "")
+        fetchRating(id: id ?? "")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
     func setupUI(id: String){
@@ -32,9 +43,16 @@ class DetailViewController: UIViewController {
     func setCollectionView(){
         imagesCollectionView.dataSource = self
         imagesCollectionView.delegate = self
+        imagesCollectionView.decelerationRate = .fast
+        
+        ratingCollectionView.dataSource = self
+        ratingCollectionView.delegate = self
         
         let nib = UINib(nibName: "ImageCollectionViewCell", bundle: nil)
         imagesCollectionView.register(nib, forCellWithReuseIdentifier: "cell")
+        
+        let ratingCell = UINib(nibName: "RatingCollectionViewCell", bundle: nil)
+        ratingCollectionView.register(ratingCell, forCellWithReuseIdentifier: "cell")
     }
     
     func fetchData(id: String){
@@ -48,9 +66,23 @@ class DetailViewController: UIViewController {
         }
     }
     
+    func fetchRating(id: String){
+        NetworkManager.shared.fetchBusinessRating(id: id, completion: { result in
+            switch result{
+            case .success(let response):
+                print(response.reviews)
+                self.ratings = response.reviews
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        })
+    }
+    
     func updateData(){
+        guard let businessModel = businessModel else{return}
         DispatchQueue.main.async {
             self.imagesCollectionView.reloadData()
+            self.titleLabel.text = businessModel.name ?? ""
         }
     }
     
@@ -64,22 +96,40 @@ class DetailViewController: UIViewController {
             }
         }
     }
+    
+    func updateRatingCollectionView(){
+        DispatchQueue.main.async {
+            self.ratingCollectionView.reloadData()
+        }
+    }
 }
 
 extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let businessModel = businessModel, let photos = businessModel.photos{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCollectionViewCell
-            cell.setupCell(urlString: photos[indexPath.row])
-            return cell
+        if collectionView === self.imagesCollectionView{
+            if let businessModel = businessModel, let photos = businessModel.photos{
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCollectionViewCell
+                cell.setupCell(urlString: photos[indexPath.row])
+                return cell
+            }else{
+                return UICollectionViewCell()
+            }
         }else{
-            return UICollectionViewCell()
+            guard let ratings = ratings else{return UICollectionViewCell()}
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RatingCollectionViewCell
+            cell.setupCell(rating: ratings[indexPath.row])
+            return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let businessModel = businessModel, let photos = businessModel.photos else{return 0}
-        return photos.count
+        if collectionView === self.imagesCollectionView{
+            guard let businessModel = businessModel, let photos = businessModel.photos else{return 0}
+            return photos.count
+        }else{
+            guard let ratings = ratings else{return 0}
+            return ratings.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -87,7 +137,11 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 200)
+        if collectionView === self.imagesCollectionView{
+            return CGSize(width: view.frame.width, height: 200)
+        }else{
+            return CGSize(width: 200, height: 150)
+        }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

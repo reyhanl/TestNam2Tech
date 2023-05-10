@@ -12,15 +12,22 @@ class BusinessTableViewCell: UITableViewCell {
     @IBOutlet weak var businessImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     
+    var session: URLSessionDataTask?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        selectionStyle = .none
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        session?.cancel()
+        session = nil
+        businessImageView.image = nil
     }
     
     func setupCell(business: BusinessModel){
@@ -30,12 +37,22 @@ class BusinessTableViewCell: UITableViewCell {
     
     func setImage(urlString: String?){
         guard let urlString = urlString, let url = URL(string: urlString) else{return}
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, let image = UIImage(data: data) else{return}
-            DispatchQueue.main.async {
-                self.businessImageView.image = image
+        DispatchQueue.global(qos: .userInteractive).async {
+            if let data = CacheManager.loadData(key: urlString), let image = UIImage(data: data){
+                DispatchQueue.main.async {
+                    self.businessImageView.image = image
+                }
+                return
             }
-        }.resume()
+            self.session = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data, let image = UIImage(data: data) else{return}
+                CacheManager.saveData(key: urlString, data: data)
+                DispatchQueue.main.async {
+                    self.businessImageView.image = image
+                }
+            }
+            self.session?.resume()
+        }
     }
     
 }

@@ -38,6 +38,10 @@ class ViewController: UIViewController {
         setLocationManager()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        setupNavigationBar()
+    }
+    
     private func setupUI(){
         setupNavigationBar()
         setupScrollToTop()
@@ -52,10 +56,11 @@ class ViewController: UIViewController {
     
     private func setupNavigationBar(){
         title = "Businesses"
-        navigationController?.navigationBar.prefersLargeTitles = true
         
+        navigationController?.navigationBar.prefersLargeTitles = true
         searchController = UISearchController(searchResultsController: nil)
         navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
         searchController?.searchResultsUpdater = self
     }
     
@@ -109,14 +114,22 @@ class ViewController: UIViewController {
             switch result{
             case .success(let model):
                 self.currentPage += 1
-                if shouldRemovePreviousData{
-                    self.businesses =  model.businesses ?? []
-                }else{
-                    print()
-                    self.businesses.append(contentsOf: model.businesses ?? [])
-                }
                 DispatchQueue.main.async {
-                    self.tableView.reloadData()
+                    if shouldRemovePreviousData{
+                        self.businesses =  model.businesses ?? []
+                        self.tableView.reloadData()
+                    }else{
+                        let businesses = model.businesses ?? []
+                        let minIndex = self.businesses.count
+                        let maxIndex = minIndex + businesses.count
+                        print(minIndex, maxIndex)
+                        let indexPaths = (minIndex..<maxIndex).map({IndexPath(row: $0, section: 0)})
+                        
+                        self.businesses.append(contentsOf: businesses)
+                        self.tableView.performBatchUpdates {
+                            self.tableView.insertRows(at: indexPaths, with: .automatic)
+                        }
+                    }
                 }
             case .failure(_):
                 break

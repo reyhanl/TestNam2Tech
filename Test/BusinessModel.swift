@@ -187,3 +187,43 @@ extension QueryModel{
         return items
     }
 }
+
+struct Rating: Codable{
+    var id: String?
+    var url: String?
+    var text: String?
+    var rating: Int?
+    var timeCreated: String?
+    var user: User?
+    
+    enum CodingKeys: String, CodingKey{
+        case id = "id"
+        case url = "url"
+        case text = "text"
+        case rating = "rating"
+        case timeCreated = "time_created"
+        case user = "user"
+    }
+}
+
+struct User: Codable{
+    var id: String?
+    var profileUrl: String?
+    var profileImage: String?
+    var name: String?
+    
+    enum CodingKeys: String, CodingKey{
+        case id = "id"
+        case profileUrl = "profile_url"
+        case profileImage = "image_url"
+        case name = "name"
+    }
+}
+
+struct RatingResponseModel: Codable{
+    var reviews: [Rating]?
+    
+    enum CodingKeys: String, CodingKey{
+        case reviews = "reviews"
+    }
+}
