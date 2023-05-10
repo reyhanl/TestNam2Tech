@@ -1,4 +1,5 @@
 # TestNam2Tech
+<img src="https://raw.github.com/reyhanl/TestNam2Tech/main/AppIcon180.png?sanitize=true" width="200px">
 
 ## Overview
 An app that display business from Yelp's API.
