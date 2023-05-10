@@ -13,7 +13,7 @@
             <connections>
                 <outlet property="appleMapActionView" destination="i5k-jg-wJj" id="9yb-LT-ece"/>
                 <outlet property="googleMapActionLabel" destination="f8D-iA-rej" id="Pkk-p5-Eqk"/>
-                <outlet property="imagesCollectionView" destination="Vmw-Np-8Xe" id="UD6-cB-dRr"/>
+                <outlet property="imagesCarouselCollectionView" destination="Vmw-Np-8Xe" id="UD6-cB-dRr"/>
                 <outlet property="mapKit" destination="FEV-A5-Z51" id="idd-l8-eI8"/>
                 <outlet property="ratingCollectionView" destination="OP1-VH-dJ0" id="GhR-cI-zm9"/>
                 <outlet property="ratingLabel" destination="jju-gY-TOU" id="DVq-Ue-Lqx"/>
