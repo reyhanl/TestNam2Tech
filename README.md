@@ -19,5 +19,11 @@ git clone https://github.com/reyhanl/TestNam2Tech.git
 
 ## Library
 ### Search Feature
-<img src="https://raw.github.com/reyhanl/TestNam2Tech/main/searchWhileFiltering.png?sanitize=true" width="100px">
+<img src="https://raw.github.com/reyhanl/TestNam2Tech/main/searchWhileFiltering.png?sanitize=true" width="200px">
+
+### Filter Feature
+<img src="https://raw.github.com/reyhanl/TestNam2Tech/main/filterByPrice.png?sanitize=true" width="200px">
+
+### Enchanced UX
+<img src="https://raw.github.com/reyhanl/TestNam2Tech/main/Toast.png?sanitize=true" width="200px">
 
