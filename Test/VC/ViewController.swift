@@ -51,6 +51,11 @@ class ViewController: UIViewController {
         setupNavigationBar()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupNavigationBar()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
@@ -83,6 +88,10 @@ class ViewController: UIViewController {
     private func setupNavigationBar(){
         title = "Businesses"
         navigationItem.searchController = searchController
+        navigationController?.navigationBar.topItem?.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.searchController?.searchBar.isHidden = false
+        definesPresentationContext = true
         navigationItem.largeTitleDisplayMode = .always
     }
     
