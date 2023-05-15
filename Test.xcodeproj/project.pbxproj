@@ -36,6 +36,15 @@
 		FC0102C82A0B27750065F710 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0102C72A0B27750065F710 /* UILabelExtension.swift */; };
 		FC0102CA2A0B3A200065F710 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0102C92A0B3A200065F710 /* UIViewControllerExtension.swift */; };
 		FC0102D22A0B5FE70065F710 /* QueryModelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0102D12A0B5FE70065F710 /* QueryModelExtension.swift */; };
+		FC0102D92A0C9B400065F710 /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0102D72A0C9B400065F710 /* FilterTableViewCell.swift */; };
+		FC0102DA2A0C9B400065F710 /* FilterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0102D82A0C9B400065F710 /* FilterTableViewCell.xib */; };
+		FC9270CE2A11E1430023D23A /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9270CC2A11E1430023D23A /* FavoritesViewController.swift */; };
+		FC9270CF2A11E1430023D23A /* FavoritesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC9270CD2A11E1430023D23A /* FavoritesViewController.xib */; };
+		FC9270D42A11E2490023D23A /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9270D22A11E2490023D23A /* FavoritesTableViewCell.swift */; };
+		FC9270D52A11E2490023D23A /* FavoritesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC9270D32A11E2490023D23A /* FavoritesTableViewCell.xib */; };
+		FC9270D82A11E2BC0023D23A /* BusinessData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FC9270D62A11E2BC0023D23A /* BusinessData.xcdatamodeld */; };
+		FC9270DC2A1212270023D23A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9270DB2A1212270023D23A /* CoreDataManager.swift */; };
+		FC9270DE2A1217E10023D23A /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9270DD2A1217E10023D23A /* NSManagedObjectExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +98,15 @@
 		FC0102C72A0B27750065F710 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		FC0102C92A0B3A200065F710 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		FC0102D12A0B5FE70065F710 /* QueryModelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryModelExtension.swift; sourceTree = "<group>"; };
+		FC0102D72A0C9B400065F710 /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
+		FC0102D82A0C9B400065F710 /* FilterTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilterTableViewCell.xib; sourceTree = "<group>"; };
+		FC9270CC2A11E1430023D23A /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		FC9270CD2A11E1430023D23A /* FavoritesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoritesViewController.xib; sourceTree = "<group>"; };
+		FC9270D22A11E2490023D23A /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
+		FC9270D32A11E2490023D23A /* FavoritesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoritesTableViewCell.xib; sourceTree = "<group>"; };
+		FC9270D72A11E2BC0023D23A /* BusinessData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BusinessData.xcdatamodel; sourceTree = "<group>"; };
+		FC9270DB2A1212270023D23A /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		FC9270DD2A1217E10023D23A /* NSManagedObjectExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +163,7 @@
 				FC0102CC2A0B5F580065F710 /* Extension */,
 				FC0102CB2A0B5F480065F710 /* Model */,
 				FC01025B2A0A03CF0065F710 /* AppDelegate.swift */,
+				FC9270D62A11E2BC0023D23A /* BusinessData.xcdatamodeld */,
 				FC01025D2A0A03CF0065F710 /* SceneDelegate.swift */,
 				FC0102642A0A03D00065F710 /* Assets.xcassets */,
 				FC0102662A0A03D00065F710 /* LaunchScreen.storyboard */,
@@ -187,6 +206,7 @@
 				FC0102BF2A0B12F20065F710 /* UIImageViewExtension.swift */,
 				FC0102D12A0B5FE70065F710 /* QueryModelExtension.swift */,
 				FC0102C72A0B27750065F710 /* UILabelExtension.swift */,
+				FC9270DD2A1217E10023D23A /* NSManagedObjectExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -195,6 +215,8 @@
 			isa = PBXGroup;
 			children = (
 				FC01025F2A0A03CF0065F710 /* ViewController.swift */,
+				FC9270CC2A11E1430023D23A /* FavoritesViewController.swift */,
+				FC9270CD2A11E1430023D23A /* FavoritesViewController.xib */,
 				FC0102612A0A03CF0065F710 /* Main.storyboard */,
 				FC0102A92A0AA3770065F710 /* DetailViewController.swift */,
 				FC0102AA2A0AA3770065F710 /* DetailViewController.xib */,
@@ -209,10 +231,14 @@
 				FC0102B22A0AA85F0065F710 /* ImageCollectionViewCell.xib */,
 				FC0102BB2A0B0DA70065F710 /* RatingCollectionViewCell.swift */,
 				FC0102BC2A0B0DA70065F710 /* RatingCollectionViewCell.xib */,
+				FC0102D72A0C9B400065F710 /* FilterTableViewCell.swift */,
+				FC0102D82A0C9B400065F710 /* FilterTableViewCell.xib */,
 				FC0102A32A0A3B760065F710 /* FilterCollectionViewCell.swift */,
 				FC0102A42A0A3B760065F710 /* FilterCollectionViewCell.xib */,
 				FC0102932A0A1AF00065F710 /* BusinessTableViewCell.swift */,
 				FC0102942A0A1AF00065F710 /* BusinessTableViewCell.xib */,
+				FC9270D22A11E2490023D23A /* FavoritesTableViewCell.swift */,
+				FC9270D32A11E2490023D23A /* FavoritesTableViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -222,6 +248,7 @@
 			children = (
 				FC0102C32A0B247E0065F710 /* CacheManager.swift */,
 				FC01028B2A0A04BB0065F710 /* NetworkManager.swift */,
+				FC9270DB2A1212270023D23A /* CoreDataManager.swift */,
 				FC0102912A0A0FAC0065F710 /* URLManager.swift */,
 			);
 			path = "Helper+Networking";
@@ -331,13 +358,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC9270D52A11E2490023D23A /* FavoritesTableViewCell.xib in Resources */,
 				FC0102682A0A03D00065F710 /* LaunchScreen.storyboard in Resources */,
+				FC0102DA2A0C9B400065F710 /* FilterTableViewCell.xib in Resources */,
 				FC0102BE2A0B0DA70065F710 /* RatingCollectionViewCell.xib in Resources */,
 				FC0102AC2A0AA3770065F710 /* DetailViewController.xib in Resources */,
 				FC0102A62A0A3B760065F710 /* FilterCollectionViewCell.xib in Resources */,
 				FC0102B42A0AA85F0065F710 /* ImageCollectionViewCell.xib in Resources */,
 				FC0102962A0A1AF00065F710 /* BusinessTableViewCell.xib in Resources */,
 				FC0102652A0A03D00065F710 /* Assets.xcassets in Resources */,
+				FC9270CF2A11E1430023D23A /* FavoritesViewController.xib in Resources */,
 				FC0102632A0A03CF0065F710 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -366,20 +396,26 @@
 				FC0102AB2A0AA3770065F710 /* DetailViewController.swift in Sources */,
 				FC0102C42A0B247F0065F710 /* CacheManager.swift in Sources */,
 				FC0102902A0A0AC50065F710 /* BusinessModel.swift in Sources */,
+				FC9270DE2A1217E10023D23A /* NSManagedObjectExtension.swift in Sources */,
 				FC0102BD2A0B0DA70065F710 /* RatingCollectionViewCell.swift in Sources */,
 				FC0102D22A0B5FE70065F710 /* QueryModelExtension.swift in Sources */,
 				FC0102CA2A0B3A200065F710 /* UIViewControllerExtension.swift in Sources */,
 				FC0102A52A0A3B760065F710 /* FilterCollectionViewCell.swift in Sources */,
+				FC0102D92A0C9B400065F710 /* FilterTableViewCell.swift in Sources */,
+				FC9270DC2A1212270023D23A /* CoreDataManager.swift in Sources */,
 				FC0102952A0A1AF00065F710 /* BusinessTableViewCell.swift in Sources */,
 				FC01028C2A0A04BB0065F710 /* NetworkManager.swift in Sources */,
 				FC0102602A0A03CF0065F710 /* ViewController.swift in Sources */,
 				FC0102B32A0AA85F0065F710 /* ImageCollectionViewCell.swift in Sources */,
 				FC0102C02A0B12F20065F710 /* UIImageViewExtension.swift in Sources */,
+				FC9270D82A11E2BC0023D23A /* BusinessData.xcdatamodeld in Sources */,
+				FC9270D42A11E2490023D23A /* FavoritesTableViewCell.swift in Sources */,
 				FC01025C2A0A03CF0065F710 /* AppDelegate.swift in Sources */,
 				FC0102A82A0A3BD50065F710 /* FilterEnum.swift in Sources */,
 				FC0102C82A0B27750065F710 /* UILabelExtension.swift in Sources */,
 				FC01025E2A0A03CF0065F710 /* SceneDelegate.swift in Sources */,
 				FC01029A2A0A278C0065F710 /* UIViewExtension.swift in Sources */,
+				FC9270CE2A11E1430023D23A /* FavoritesViewController.swift in Sources */,
 				FC0102922A0A0FAC0065F710 /* URLManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -730,6 +766,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		FC9270D62A11E2BC0023D23A /* BusinessData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FC9270D72A11E2BC0023D23A /* BusinessData.xcdatamodel */,
+			);
+			currentVersion = FC9270D72A11E2BC0023D23A /* BusinessData.xcdatamodel */;
+			path = BusinessData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = FC0102502A0A03CF0065F710 /* Project object */;
 }

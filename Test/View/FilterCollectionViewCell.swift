@@ -15,12 +15,19 @@ class FilterCollectionViewCell: UICollectionViewCell {
     var filter: Filter?
     var delegate: FilterCollectionViewCellDelegate?
     
+    override var isSelected: Bool{
+        didSet{
+            setActiveStatus(isSelected)
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         setupUI()
     }
     
     func setupCell(filter: Filter, isActive: Bool){
+        setActiveStatus(isSelected)
         label.text = filter.displayValue
         switch filter{
         case .distanceAscending(let isAscending):

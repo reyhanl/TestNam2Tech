@@ -12,7 +12,6 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var scrollToTopButton: UIView!
-    @IBOutlet weak var filterCollectionView: UICollectionView!
     var refreshControl: UIRefreshControl?
     
     private var businesses: [BusinessModel] = []
@@ -30,6 +29,7 @@ class ViewController: UIViewController {
             }
         }
     }
+    var isCollectionViewCellHidden: Bool = false
     //MARK: Insert your API KEY HERE
     private var apiKey = "uWStM_d70fspPIssaT-MFENN9HUX_7e8S92IGkCYV4PmrL85L6cM5Zccak6MZopiRIiXwK5cPrxANjzlHLRzayi46hKymuy7N7hOnOwKEP2UVumWVFrVQ2ji3tFZZHYx"
     private var activeFilters: [Filter] = []
@@ -39,7 +39,6 @@ class ViewController: UIViewController {
         setupUI()
         setApiKey()
         setupTableView()
-        setupCollectionView()
         navigationController?.navigationBar.prefersLargeTitles = true
         setLocationManager()
         setupSearchController()
@@ -89,10 +88,11 @@ class ViewController: UIViewController {
         title = "Businesses"
         navigationItem.searchController = searchController
         navigationController?.navigationBar.topItem?.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.hidesSearchBarWhenScrolling = true
         navigationItem.searchController?.searchBar.isHidden = false
         definesPresentationContext = true
         navigationItem.largeTitleDisplayMode = .always
+        scrollToTop()
     }
     
     private func setupSearchController(){
@@ -107,20 +107,15 @@ class ViewController: UIViewController {
         scrollToTopButton.layer.cornerRadius = scrollToTopButton.frame.width / 2
     }
     
-    private func setupCollectionView(){
-        filterCollectionView.dataSource = self
-        filterCollectionView.delegate = self
-        
-        let nib = UINib(nibName: "FilterCollectionViewCell", bundle: nil)
-        filterCollectionView.register(nib, forCellWithReuseIdentifier: "cell")
-    }
-    
     private func setupTableView(){
         tableView.dataSource = self
         tableView.delegate = self
         
         let nib = UINib(nibName: "BusinessTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "cell")
+        
+        let filterNib = UINib(nibName: "FilterTableViewCell", bundle: nil)
+        tableView.register(filterNib, forCellReuseIdentifier: "filterCell")
     }
     
     private func fetchData(keywordParam: String? = nil, shouldRemovePreviousData: Bool = false){
@@ -203,6 +198,7 @@ class ViewController: UIViewController {
     }
     
     @objc private func scrollToTop(){
+        guard businesses.count > 0 else{return}
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
     
@@ -214,17 +210,25 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return businesses.count
+        return businesses.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! BusinessTableViewCell
-        cell.setupCell(business: businesses[indexPath.row])
-        return cell
+        if indexPath.row == 0{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "filterCell") as! FilterTableViewCell
+            cell.collectionView.delegate = self
+            cell.collectionView.dataSource = self
+            return cell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! BusinessTableViewCell
+            let business = isCollectionViewCellHidden ? businesses[indexPath.row]:businesses[indexPath.row - 1]
+            cell.setupCell(business: business)
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return isCollectionViewCellHidden && indexPath.row == 0 ? 100:100
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -234,6 +238,13 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate{
         if indexPath.row == businesses.count - 1 && tableView.contentSize.height > tableView.frame.height{
             fetchData()
         }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        return !(indexPath.row == 0)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -259,6 +270,21 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return .init(top: 0, left: 10, bottom: 0, right: 0)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = CGSize(width: filters[indexPath.row].displayValue.widthOfString(usingFont: .systemFont(ofSize: 14)) + 40, height: 50)
+        return size
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let filter = filters[indexPath.row]
+        let shouldAddFilter = !activeFilters.contains(where: {$0.displayValue == filter.displayValue})
+        if shouldAddFilter{
+            activeFilters.append(filter)
+        }else{
+            activeFilters.removeAll(where: {$0.displayValue == filter.displayValue})
+        }
+    }
 }
 
 extension ViewController: UISearchResultsUpdating{
@@ -273,11 +299,15 @@ extension ViewController: FilterCollectionViewCellDelegate{
     func shouldExecuteFilter(filter: Filter) {
         if activeFilters.contains(where: {$0.displayValue == filter.displayValue}){
             activeFilters.removeAll(where: {$0.displayValue == filter.displayValue})
-            filterCollectionView.reloadData()
+            let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! FilterTableViewCell
+            cell.collectionView.reloadData()
             fetchData(shouldRemovePreviousData: true)
         }else{
             activeFilters.append(filter)
-            filterCollectionView.reloadData()
+            if !isCollectionViewCellHidden{
+                let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! FilterTableViewCell
+                cell.collectionView.reloadData()
+            }
             fetchData(shouldRemovePreviousData: true)
         }
     }
@@ -290,7 +320,9 @@ extension ViewController: FilterCollectionViewCellDelegate{
         case .distanceAscending(let isAscending):
             filters.remove(at: index)
             filters.insert(.distanceAscending(!isAscending), at: index)
-            filterCollectionView.reloadData()
+            if !isCollectionViewCellHidden{
+                tableView.reloadRows(at: [.init(row: 0, section: 0)], with: .none)
+            }
             tableView.reloadData()
         default:
             break

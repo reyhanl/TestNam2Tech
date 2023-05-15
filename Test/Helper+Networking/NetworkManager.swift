@@ -95,4 +95,5 @@ enum CustomError: Error{
     case callApiFailBecauseURLNotFound
     case apiReturnNoData
     case somethingWentWrong
+    case fetchFromCoreDataError
 }

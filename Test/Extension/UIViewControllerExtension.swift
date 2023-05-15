@@ -8,6 +8,10 @@
 import UIKit
 
 extension UIViewController{
+    var isDarkMode: Bool{
+       return self.traitCollection.userInterfaceStyle == .dark
+    }
+    
     func presentToastAlert(text: String){
         enum Animate{
             case animateIn
